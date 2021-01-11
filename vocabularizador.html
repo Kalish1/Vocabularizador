@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vocabularizador</title>
+  <link href="https://fonts.googleapis.com/css?family=Bellefair" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <style>
+    .main-content {
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: column;
+      height: 100vh;
+      background: linear-gradient(to right, rgba(36, 31, 31, 1) 0%, rgba(36, 31, 31, 1) 32%, rgba(74, 71, 70, 1) 100%);
+      color: #fff;
+      text-align: left;
+    }
+
+    .vignette {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0px 0px 150px 20px black;
+      mix-blend-mode: multiply;
+      -webkit-animation: vignette-anim 3s infinite;
+      -moz-animation: vignette-anim 3s infinite;
+      -o-animation: vignette-anim 3s infinite;
+      animation: vignette-anim 3s infinite;
+    }
+
+    .noise {
+      z-index: 100;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: .15;
+    }
+
+    .line {
+      position: absolute;
+      height: 100%;
+      width: 0px;
+      opacity: 0.1;
+      background-color: #000;
+    }
+
+    .titleCont {
+      position: relative;
+    }
+
+    .main-title {
+      padding: .3em 1em .25em;
+      font-weight: 400;
+      font-size: 26px;
+      color: white;
+      font-family: 'Bellefair', serif;
+      position: relative;
+      line-height: 1.3;
+    }
+
+    .overTitle {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .dot {
+      width: 3px;
+      height: 2px;
+      background-color: white;
+      position: absolute;
+      opacity: 0.3;
+    }
+
+    @-webkit-keyframes vignette-anim {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    @-moz-keyframes vignette-anim {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    @-o-keyframes vignette-anim {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes vignette-anim {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 99999;
+    }
+
+    ul li {
+      list-style: none;
+      margin: 0 15px;
+    }
+
+    ul li a {
+      position: relative;
+      display: block;
+      width: 60px;
+      height: 60px;
+      text-align: center;
+      line-height: 60px;
+      background: #171515;
+      border-radius: 50%;
+      font-size: 30px;
+      color: #666;
+      transition: .5s;
+    }
+
+    ul li a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #cbcbcb;
+      transition: .5s;
+      transform: scale(.9);
+      z-index: -1;
+    }
+
+    ul li a:hover:before {
+      transform: scale(1.2);
+      box-shadow: 0 0 15px #cbcbcb;
+      filter: blur(3px);
+    }
+
+    ul li a:hover {
+      color: #dbdbdb;
+      box-shadow: 0 0 15px #cbcbcb;
+      text-shadow: 0 0 15px #cbcbcb;
+    }
+
+    .lds-grid {
+      left: calc(50% - 40px);
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .lds-grid div {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      animation: lds-grid 1.2s linear infinite;
+    }
+
+    .lds-grid div:nth-child(1) {
+      top: 8px;
+      left: 8px;
+      animation-delay: 0s;
+    }
+
+    .lds-grid div:nth-child(2) {
+      top: 8px;
+      left: 32px;
+      animation-delay: -0.4s;
+    }
+
+    .lds-grid div:nth-child(3) {
+      top: 8px;
+      left: 56px;
+      animation-delay: -0.8s;
+    }
+
+    .lds-grid div:nth-child(4) {
+      top: 32px;
+      left: 8px;
+      animation-delay: -0.4s;
+    }
+
+    .lds-grid div:nth-child(5) {
+      top: 32px;
+      left: 32px;
+      animation-delay: -0.8s;
+    }
+
+    .lds-grid div:nth-child(6) {
+      top: 32px;
+      left: 56px;
+      animation-delay: -1.2s;
+    }
+
+    .lds-grid div:nth-child(7) {
+      top: 56px;
+      left: 8px;
+      animation-delay: -0.8s;
+    }
+
+    .lds-grid div:nth-child(8) {
+      top: 56px;
+      left: 32px;
+      animation-delay: -1.2s;
+    }
+
+    .lds-grid div:nth-child(9) {
+      top: 56px;
+      left: 56px;
+      animation-delay: -1.6s;
+    }
+
+    @keyframes lds-grid {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    body {
+      height: 100vh;
+      display: grid;
+      font-family: 'Bellefair', serif;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .inp {
+      position: relative;
+      margin: auto;
+      width: 100%;
+      max-width: 280px;
+      border-radius: 3px;
+      overflow: hidden;
+      z-index: 99999;
+    }
+
+    .inp .label {
+      margin-top: 5%;
+      position: absolute;
+      top: 20px;
+      left: 12px;
+      font-size: 26px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+      transform-origin: 0 0;
+      transform: translate3d(0, 0, 0);
+      transition: all 0.2s ease;
+      pointer-events: none;
+    }
+
+    .inp .focus-bg {
+      margin-top: 5%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    .inp input {
+      margin-top: 5%;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      padding: 32px 12px 0 12px;
+      height: 82px;
+      font-size: 26px;
+      font-weight: 400;
+      background: rgba(255, 255, 255, 0.02);
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+      color: #fff;
+      transition: all 0.15s ease;
+    }
+
+    .inp input:hover {
+      background: rgba(255, 255, 255, 0.04);
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .inp input:not(:-moz-placeholder-shown)+.label {
+      color: rgba(255, 255, 255, 0.5);
+      transform: translate3d(0, -12px, 0) scale(0.75);
+    }
+
+    .inp input:not(:-ms-input-placeholder)+.label {
+      color: rgba(255, 255, 255, 0.5);
+      transform: translate3d(0, -12px, 0) scale(0.75);
+    }
+
+    .inp input:not(:placeholder-shown)+.label {
+      color: rgba(255, 255, 255, 0.5);
+      transform: translate3d(0, -12px, 0) scale(0.75);
+    }
+
+    .inp input:focus {
+      background: rgba(255, 255, 255, 0.05);
+      outline: none;
+      box-shadow: inset 0 -2px 0 #a9a9a9;
+    }
+
+    .inp input:focus+.label {
+      color: #a9a9a9;
+      transform: translate3d(0, -12px, 0) scale(0.75);
+    }
+
+    .inp input:focus+.label+.focus-bg {
+      transform: scaleX(1);
+      transition: all 0.1s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <label for="inp" class="inp">
+  <input type="text" id="inp" value=".">
+  <span class="label">regex</span>
+  <span class="focus-bg"></span>
+</label>
+  <ul>
+    <li><a href="#" onclick="sortear_palavra()"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+  </ul>
+  <main role="main" class="main-content" id="main-content">
+    <div class="titleCont">
+      <h1 class="main-title" id="main-title">
+      <p style="font-size:52px;" id="palavra"></p>
+      <p id="significado"></p>
+      <p id="origem"></p>
+    </h1>
+    </div>
+    <canvas id="noise" class="noise"></canvas>
+    <div class="vignette"></div>
+    <footer style="bottom:0;text-align:center;"><small>&copy; 2021, Kalish</small></footer>
+  </main>
+  <script>
+    function sortear_palavra() {
+      fetch('https://raw.githubusercontent.com/pythonprobr/palavras/master/palavras.txt').then(response => response.text()).then(dicionario => {
+        let adic = dicionario.split("\n").filter(matched => matched.match(new RegExp(document.getElementById("inp").value), 'i'));
+        if (adic.length) {
+          document.getElementById("palavra").innerHTML = '<span style="text-align:center;">sorteando entre <span style="font-size:36px;">' + adic.length + '</span> palavras</span>';
+          document.getElementById("significado").innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+          document.getElementById("origem").innerHTML = '';
+          procurar_palavra(adic[Math.floor(Math.random() * adic.length)]);
+        } else {
+          document.getElementById("palavra").innerHTML = '<span style="text-align:center;">não existem palavras para a regex específicada</span>';
+          document.getElementById("significado").innerHTML = '';
+          document.getElementById("origem").innerHTML = '';
+        }
+      });
+    }
+
+    function procurar_palavra(palav) {
+      fetch('https://api.dictionaryapi.dev/api/v2/entries/pt-BR/' + palav).then(response => {
+        if (!response.ok) sortear_palavra();
+        else return response.json();
+      }).then(palavra => {
+        document.getElementById("palavra").innerHTML = palavra[0].word;
+        let significado = "";
+        palavra[0].meanings.forEach(asig => {
+          significado += '<span style="font-style:italic;">' + asig.partOfSpeech + '</span><br/>';
+          asig.definitions.forEach((defi, i) => {
+            if (i < 8) {
+              significado += '<span style="padding-left:30px;font-size:18px;">' + (i + 1) + '.</span><span> ' + defi.definition + '</span></br>';
+              if (defi.example) significado += '<span style="padding-left:40px">"' + defi.example + '"</span><br/>'
+            }
+          });
+        });
+        document.getElementById("significado").innerHTML = significado;
+        if (palavra[0].origin) document.getElementById("origem").innerHTML = '<span style="font-style:italic;">origem</span><br/><span style="padding-left:30px;">' + palavra[0].origin + '</span>';
+      });
+    }
+  </script>
+  <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.2/TweenMax.min.js"></script>
+  <script src="https://codepen.io/mimikos/pen/GvpJYQ.js"></script>
+  <script src="https://codepen.io/mimikos/pen/rzOOgG.js"></script>
+</body>
+
+</html>
