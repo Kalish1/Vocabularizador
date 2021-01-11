@@ -1,5 +1,5 @@
 # Vocabularizador
-Sorteia uma palavra e seu significado em um dicionário a partir de uma regex
+Sorteia uma palavra contendo significado em um dicionário a partir de uma regex
 
 [https://kalish1.github.io/Vocabularizador](https://kalish1.github.io/Vocabularizador)
 
